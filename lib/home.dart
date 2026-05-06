@@ -16,7 +16,16 @@ class _HomePageState extends State<HomePage> {
       ),
       body: FutureBuilder(initialData: [],builder: (context, snapshot) {
         return snapshot.hasData ? Center(child: CircularProgressIndicator(),) : _buildListView(snapshot);
-      }, future: _loadDiary(),)
+      }, future: _loadDiary(),),
+      bottomNavigationBar: BottomAppBar(shape: CircularNotchedRectangle(),child: Padding(padding: EdgeInsets.all(30.0),)
+      ,),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        _addOrEditDiary(add: true, index:-1, diary:Diary());
+      },
+      tooltip: 'Add Diary Entry',
+      child: const Icon(Icons.add),
+       ),
     );
   }
   
