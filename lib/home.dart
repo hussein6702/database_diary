@@ -14,9 +14,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: const Center(
-        child: Text('Welcome'),
-      ),
+      body: FutureBuilder(initialData: [],builder: (context, snapshot) {
+        return snapshot.hasData ? Center(child: CircularProgressIndicator(),) : _buildListView(snapshot);
+      }, future: _loadDiary(),)
     );
   }
+  
+ Widget _buildListView(AsyncSnapshot<List<dynamic>> snapshot) {
+
+  }
+}
+
+Future<List<dynamic>>? _loadDiary() async {
 }
