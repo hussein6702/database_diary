@@ -32,7 +32,7 @@ class _EditEntryState extends State<EditEntry> {
     super.initState(); 
     _diaryEdit = DiaryEdit('Cancel', widget.diary); 
     _title = widget.add ? 'Add Diary Entry' : 'Edit Diary Entry'; 
-    _diaryEdit.diary = widget.diary; 
+    _diaryEdit.diary = widget.diaryEdit.diary; 
     if(widget.add){ 
       _selectedDate = DateTime.now(); 
       _moodController.text = ''; 
@@ -51,7 +51,7 @@ class _EditEntryState extends State<EditEntry> {
     super.dispose(); 
   } 
  
-  Future<DateTime> _selectDate(DateTime _selectedDate) async { 
+  Future<DateTime> _selectDate(DateTime selectedDate) async { 
     DateTime _initialDate = selectedDate; 
     final DateTime? pickedDate = await showDatePicker( 
       context: context,  
@@ -85,18 +85,39 @@ class _EditEntryState extends State<EditEntry> {
           child: Column( 
             children: [ 
               ElevatedButton( 
-                onPressed: onPressed,  
+                onPressed: () async { 
+                  FocusScope.of(context).requestFocus(FocusNode()); 
+                  DateTime _pickerDate = await _selectDate(_selectedDate); 
+                  setState(() { 
+                    _selectedDate = _pickerDate; 
+                  }); 
+                },  
+                 
                 child: Row( 
                   children: [ 
                     Icon(Icons.calendar_today, size: 24.0, color: Colors.black,), 
                     Text(DateFormat.yMMMEd().format(_selectedDate), 
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), 
                     ), 
-                    Icons(Icons.arrow_drop_down, size: 24.0, color: Colors.black,)
+                    Icon(Icons.arrow_drop_down, size: 24.0, color: Colors.black,) 
                   ], 
                 ) 
               ), 
-              TextField(), 
+               
+              TextField( 
+                controller: _moodController, 
+                autofocus: true, 
+                textInputAction: TextInputAction.next, 
+                focusNode: _moodFocusNode, 
+                textCapitalization: TextCapitalization.words, 
+                decoration: InputDecoration( 
+                  labelText: 'Mood', 
+                  icon: Icon(Icons.mood) 
+                ), 
+                onSubmitted: (submitted) { 
+                  FocusScope.of(context).requestFocus(_noteFocusNode); 
+                }, 
+              ), 
               TextField(), 
               Row() 
             ], 
