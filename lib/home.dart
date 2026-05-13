@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+import 'database.dart';
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
+      body: FutureBuilder(
+        initialData: [],
+        future: _loadDairy(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return !snapshot.hasData
+              ? Center(child: CircularProgressIndicator())
+              : _buildListView(snapshot);
+        },
       ),
-      body: FutureBuilder(initialData: [],builder: (context, snapshot) {
-        return snapshot.hasData ? Center(child: CircularProgressIndicator(),) : _buildListView(snapshot);
-      }, future: _loadDiary(),),
-      bottomNavigationBar: BottomAppBar(shape: CircularNotchedRectangle(),child: Padding(padding: EdgeInsets.all(30.0),)
-      ,),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: Padding(padding: EdgeInsets.all(16.0)),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        _addOrEditDiary(add: true, index:-1, diary:Diary());
-      },
-      tooltip: 'Add Diary Entry',
-      child: const Icon(Icons.add),
-       ),
+      floatingActionButton: FloatingActionButton(
+        shape: CircleBorder(),
+        tooltip: 'Add Diary Entry',
+        onPressed: () {
+          _addOrEditDiary(add: true, index: -1,diary: Diary("", "", "", ""));
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
-  
- Widget _buildListView(AsyncSnapshot<List<dynamic>> snapshot) {
-
-  }
-}
-
-Future<List<dynamic>>? _loadDiary() async {
 }

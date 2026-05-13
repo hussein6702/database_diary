@@ -1,19 +1,22 @@
-import 'package:database_diary/home.dart';
 import 'package:flutter/material.dart';
-
+import 'home.dart';
 void main() {
   runApp(const MainApp());
 }
-
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Local Storage',
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      title: 'Local Persistence',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        bottomAppBarTheme: BottomAppBarThemeData(
+          color: Colors.blue,
+        ),
+      ),
+      home: Home(),
     );
   }
 }
