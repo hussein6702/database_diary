@@ -32,7 +32,7 @@ class _EditEntryState extends State<EditEntry> {
     super.initState(); 
     _diaryEdit = DiaryEdit('Cancel', widget.diary); 
     _title = widget.add ? 'Add Diary Entry' : 'Edit Diary Entry'; 
-    _diaryEdit.diary = widget.diaryEdit.diary; 
+    _diaryEdit.diary = widget.diary; 
     if(widget.add){ 
       _selectedDate = DateTime.now(); 
       _moodController.text = ''; 
@@ -69,7 +69,8 @@ class _EditEntryState extends State<EditEntry> {
         _initialDate.millisecond,  
         _initialDate.microsecond 
       ); 
-    } 
+    }
+    return selectedDate;
   } 
  
   @override 
@@ -118,8 +119,44 @@ class _EditEntryState extends State<EditEntry> {
                   FocusScope.of(context).requestFocus(_noteFocusNode); 
                 }, 
               ), 
-              TextField(), 
-              Row() 
+              TextField(
+                controller: _noteController,
+                textInputAction: TextInputAction.newline,
+                focusNode: _noteFocusNode,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  labelText: 'Note',
+                  icon: Icon(Icons.note)
+                ),
+              ), 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _diaryEdit.action = 'Cancel';
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  SizedBox(width: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      _diaryEdit.action = 'Save';
+                      String _id = widget.add ? Random().nextInt(999999999).toString() : _diaryEdit.diary.id;
+                      String _date = DateFormat.yMd().format(_selectedDate);
+
+                      _diaryEdit.diary = Diary(
+                        _id,
+                        _date,
+                        _moodController.text,
+                        _noteController.text,
+                      );
+                      Navigator.pop(context, _diaryEdit);               
+                     },
+                    child: Text('Save'),
+                  ),
+                ],
+              ),
             ], 
           ), 
         ) 
