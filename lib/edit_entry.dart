@@ -32,7 +32,7 @@ class _EditEntryState extends State<EditEntry> {
     super.initState(); 
     _diaryEdit = DiaryEdit('Cancel', widget.diary); 
     _title = widget.add ? 'Add Diary Entry' : 'Edit Diary Entry'; 
-    _diaryEdit.diary = widget.diaryEdit.diary; 
+    _diaryEdit.diary = widget.diary; 
     if(widget.add){ 
       _selectedDate = DateTime.now(); 
       _moodController.text = ''; 
@@ -92,7 +92,7 @@ class _EditEntryState extends State<EditEntry> {
                     Text(DateFormat.yMMMEd().format(_selectedDate), 
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), 
                     ), 
-                    Icons 
+                    Icons(Icons.arrow_drop_down, size: 24.0, color: Colors.black,)
                   ], 
                 ) 
               ), 
